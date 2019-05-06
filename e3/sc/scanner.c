@@ -40,14 +40,10 @@ void get_token()
 {
     int i;
 
-#ifdef DEBUG
-    printf("[%c]: ", c);
-#endif
 state0:
 #ifdef DEBUG
-    printf("state0 ");
+    printf("[%c] state0 ", c);
 #endif
-    end_of_lexeme = 0;
     end_of_lexeme = 0;
     if (char_pos(WHITESPACE, c) >= 0)
     {
@@ -166,7 +162,7 @@ state0:
 /* 課題演習のため空欄 */
 state1:
 #ifdef DEBUG
-    printf("-> state1 ");
+    printf("-> [%c] state1 ", c);
 #endif
     // * (state1 -> state2)
     if (c == '*')
@@ -178,14 +174,12 @@ state1:
     // Other than * (state1 -> LPAR -> final)
     else
     {
-        save_char(c);
-        get_char();
         token = TOKEN_LPAR;
         goto final;
     }
 state2:
 #ifdef DEBUG
-    printf("-> state2 ");
+    printf("-> [%c] state2 ", c);
 #endif
     // * (state2 -> state3)
     if (c == '*')
@@ -210,7 +204,7 @@ state2:
     }
 state3:
 #ifdef DEBUG
-    printf("-> state3 ");
+    printf("-> [%c] state3 ", c);
 #endif
     // ) (state3 -> state0)
     if (c == ')')
@@ -224,7 +218,7 @@ state3:
     {
         save_char(c);
         get_char();
-        goto state0;
+        goto state3;
     }
     // EOF (state3 -> state0)
     else if (c == EOF)
@@ -242,7 +236,7 @@ state3:
     }
 state4:
 #ifdef DEBUG
-    printf("-> state4 ");
+    printf("-> [%c] state4 ", c);
 #endif
     // ALPHABET (state4 -> state4)
     // DIGIT (state4 -> state4)
@@ -269,7 +263,7 @@ state4:
     }
 state5:
 #ifdef DEBUG
-    printf("-> state5 ");
+    printf("-> [%c] state5 ", c);
 #endif
     // x (state5 -> state6)
     if (c == 'x')
@@ -288,14 +282,12 @@ state5:
     // Other than x, DIGHT (state5 -> NUM -> final)
     else
     {
-        save_char(c);
-        get_char();
         token = TOKEN_NUM;
         goto final;
     }
 state6:
 #ifdef DEBUG
-    printf("-> state6 ");
+    printf("-> [%c] state6 ", c);
 #endif
     // HEXDIGIT (state6 -> state7)
     if (char_pos(HEXDIGIT, tolower(c)) >= 0)
@@ -307,14 +299,13 @@ state6:
     // Other than HEXDIGIT (state6 -> ERROR -> final)
     else
     {
-        save_char(c);
         get_char();
         token = TOKEN_ERROR;
         goto final;
     }
 state7:
 #ifdef DEBUG
-    printf("-> state7 ");
+    printf("-> [%c] state7 ", c);
 #endif
     // HEXDIGIT (state7 -> state7)
     if (char_pos(HEXDIGIT, tolower(c)) >= 0)
@@ -326,14 +317,12 @@ state7:
     // Other than HEXDIGIT (state7 -> NUM -> final)
     else
     {
-        save_char(c);
-        get_char();
         token = TOKEN_NUM;
         goto final;
     }
 state8:
 #ifdef DEBUG
-    printf("-> state8 ");
+    printf("-> [%c] state8 ", c);
 #endif
     // DIGHT (state8 -> state8)
     if (char_pos(DIGIT, tolower(c)) >= 0)
@@ -345,14 +334,12 @@ state8:
     // Other than DIGHT (state8 -> NUM -> final)
     else
     {
-        save_char(c);
-        get_char();
         token = TOKEN_NUM;
         goto final;
     }
 state9:
 #ifdef DEBUG
-    printf("-> state9 ");
+    printf("-> [%c] state9 ", c);
 #endif
     // \ (state9 -> state10)
     if (c == '\\')
@@ -378,7 +365,7 @@ state9:
     }
 state10:
 #ifdef DEBUG
-    printf("-> state10 ");
+    printf("-> [%c] state10 ", c);
 #endif
     // n, t, 0, ', ", \ (state10 -> state11)
     if (c == 'n' ||
@@ -396,13 +383,12 @@ state10:
     else
     {
         save_char(c);
-        get_char();
         token = TOKEN_ERROR;
         goto final;
     }
 state11:
 #ifdef DEBUG
-    printf("-> state11 ");
+    printf("-> [%c] state11 ", c);
 #endif
     // ' (state11 -> NUM -> final)
     if (c == '\'')
@@ -415,14 +401,12 @@ state11:
     // Othar than ' (state11 -> ERROR -> final)
     else
     {
-        save_char(c);
-        get_char();
         token = TOKEN_ERROR;
         goto final;
     }
 state12:
 #ifdef DEBUG
-    printf("-> state12 ");
+    printf("-> [%c] state12 ", c);
 #endif
     // = (state12 -> COLEQ -> final)
     if (c == '=')
@@ -435,14 +419,12 @@ state12:
     // Other than = (state12 -> COL -> final)
     else
     {
-        save_char(c);
-        get_char();
         token = TOKEN_COL;
         goto final;
     }
 state13:
 #ifdef DEBUG
-    printf("-> state13 ");
+    printf("-> [%c] state13 ", c);
 #endif
     // = (state13 -> LE -> final)
     if (c == '=')
@@ -463,14 +445,12 @@ state13:
     // Other than =, > (state13 -> LT -> final)
     else
     {
-        save_char(c);
-        get_char();
         token = TOKEN_LT;
         goto final;
     }
 state14:
 #ifdef DEBUG
-    printf("-> state14 ");
+    printf("-> [%c] state14 ", c);
 #endif
     // = (state14 -> GE -> final)
     if (c == '=')
@@ -491,14 +471,12 @@ state14:
     // Other than =, < (state13 -> GT -> final)
     else
     {
-        save_char(c);
-        get_char();
         token = TOKEN_GT;
         goto final;
     }
 state15:
 #ifdef DEBUG
-    printf("-> state15 ");
+    printf("-> [%c] state15 ", c);
 #endif
     // > (state14 -> GE -> final)
     if (c == '>')
@@ -519,14 +497,12 @@ state15:
     // Other than >, < (state13 -> EQ -> final)
     else
     {
-        save_char(c);
-        get_char();
         token = TOKEN_EQ;
         goto final;
     }
 final:
 #ifdef DEBUG
-    printf("-> final\n");
+    printf("-> final\n", c);
 #endif
     return;
 }

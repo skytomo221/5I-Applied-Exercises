@@ -3,8 +3,6 @@
 #define DIGIT "0123456789"
 #define HEXDIGIT "0123456789abcdef"
 
-#define DEBUG 1
-
 #define TOKEN_EOF -1
 #define TOKEN_ERROR 0
 #define TOKEN_ID 1
