@@ -1,0 +1,26 @@
+(* a comment *)
+(*commentwithnospace*)
+(**)
+(***)
+(* comment 
+ including a LF *)
+(			(* single ( *)
+a			(* identifier one character *)
+a1b2c3d4e		(* identifier *)
+if			(* keywords *)
+then else while do repeat until begin end long word byte goto
+and or not
+0			(* num *)
+1 2 3 4 5 6 7 8 9 10
+01234
+0x0 0x1 0x2 0x3 0x4 0x5 0x6 0x7 0x8 0x9 0xa 0xb 0xc 0xd 0xe 0xf
+0xA 0xB 0xC 0xD 0xE 0xF
+0xABCD 0xabcd 0x00123 0xEF0123
+0abc			(* 0 & abc *)
+0XAB12			(* error *)
+0x			(* error *)
+'a' ' ' '\n' '\t' '\0' '\'' '\"' '\\' 'n' 't' '0'
+: := < <= <> <a > >= >< >a = =< => =a
+() + - * / ; & #
+()+-*/;&#
+      /			/	done
