@@ -12,6 +12,7 @@ char lexeme[BUFSIZ];
 int token;
 static int c_lineno = 1;
 int lineno;
+char lexvalue[BUFSIZ];
 
 void get_char()
 {
@@ -44,10 +45,10 @@ int token;
 
 void get_token()
 {
-    int i;
+    int i, value = 0;
 
 state0:
-#ifdef DEBUG
+#ifdef DEBUG3
     printf("[%c] state0 ", c);
 #endif
     end_of_lexeme = 0;
@@ -75,10 +76,14 @@ state0:
         get_char();
         goto state5;
     }
-    else if (char_pos(DIGIT, c) >= 0)
+    else if ((i = char_pos(DIGIT, c)) >= 0)
     {
         save_char(c);
+        value = i;
         get_char();
+#ifdef DEBUG4
+        printf("i = %d, value = %d\n", i, value);
+#endif
         goto state8;
     }
     else if (c == '\'')
@@ -167,7 +172,7 @@ state0:
         goto final;
     }
 state1:
-#ifdef DEBUG
+#ifdef DEBUG3
     printf("-> [%c] state1 ", c);
 #endif
     // * (state1 -> state2)
@@ -184,7 +189,7 @@ state1:
         goto final;
     }
 state2:
-#ifdef DEBUG
+#ifdef DEBUG3
     printf("-> [%c] state2 ", c);
 #endif
     // * (state2 -> state3)
@@ -209,7 +214,7 @@ state2:
         goto state2;
     }
 state3:
-#ifdef DEBUG
+#ifdef DEBUG3
     printf("-> [%c] state3 ", c);
 #endif
     // ) (state3 -> state0)
@@ -241,7 +246,7 @@ state3:
         goto state2;
     }
 state4:
-#ifdef DEBUG
+#ifdef DEBUG3
     printf("-> [%c] state4 ", c);
 #endif
     // ALPHABET (state4 -> state4)
@@ -268,7 +273,7 @@ state4:
         goto final;
     }
 state5:
-#ifdef DEBUG
+#ifdef DEBUG3
     printf("-> [%c] state5 ", c);
 #endif
     // x (state5 -> state6)
@@ -279,9 +284,10 @@ state5:
         goto state6;
     }
     // DIGHT (state5 -> state8)
-    else if (char_pos(DIGIT, tolower(c)) >= 0)
+    else if ((i = char_pos(DIGIT, c)) >= 0)
     {
         save_char(c);
+        value = i;
         get_char();
         goto state8;
     }
@@ -289,17 +295,22 @@ state5:
     else
     {
         token = TOKEN_NUM;
+        sprintf(lexvalue, "%d", value);
         goto final;
     }
 state6:
-#ifdef DEBUG
+#ifdef DEBUG3
     printf("-> [%c] state6 ", c);
 #endif
     // HEXDIGIT (state6 -> state7)
-    if (char_pos(HEXDIGIT, tolower(c)) >= 0)
+    if ((i = char_pos(HEXDIGIT, tolower(c))) >= 0)
     {
         save_char(c);
+        value = i;
         get_char();
+#ifdef DEBUG4
+        printf("i = %d (%x), value = %d (%x)\n", i, i, value, value);
+#endif
         goto state7;
     }
     // Other than HEXDIGIT (state6 -> ERROR -> final)
@@ -310,41 +321,51 @@ state6:
         goto final;
     }
 state7:
-#ifdef DEBUG
+#ifdef DEBUG3
     printf("-> [%c] state7 ", c);
 #endif
     // HEXDIGIT (state7 -> state7)
-    if (char_pos(HEXDIGIT, tolower(c)) >= 0)
+    if ((i = char_pos(HEXDIGIT, tolower(c))) >= 0)
     {
         save_char(c);
+        value = value * 0x10 + i;
         get_char();
+#ifdef DEBUG4
+        printf("i = %d (%x), value = %d (%x)\n", i, i, value, value);
+#endif
         goto state7;
     }
     // Other than HEXDIGIT (state7 -> NUM -> final)
     else
     {
         token = TOKEN_NUM;
+        sprintf(lexvalue, "%d", value);
         goto final;
     }
 state8:
-#ifdef DEBUG
+#ifdef DEBUG3
     printf("-> [%c] state8 ", c);
 #endif
     // DIGHT (state8 -> state8)
-    if (char_pos(DIGIT, tolower(c)) >= 0)
+    if ((i = char_pos(DIGIT, c)) >= 0)
     {
         save_char(c);
+        value = value * 10 + i;
         get_char();
+#ifdef DEBUG4
+        printf("i = %d, value = %d\n", i, value);
+#endif
         goto state8;
     }
     // Other than DIGHT (state8 -> NUM -> final)
     else
     {
         token = TOKEN_NUM;
+        sprintf(lexvalue, "%d", value);
         goto final;
     }
 state9:
-#ifdef DEBUG
+#ifdef DEBUG3
     printf("-> [%c] state9 ", c);
 #endif
     // \ (state9 -> state10)
@@ -366,11 +387,15 @@ state9:
     else
     {
         save_char(c);
+        value = c;
         get_char();
+#ifdef DEBUG4
+        printf("i = %d (%c), value = %d (%c)\n", i, i, value, value);
+#endif
         goto state11;
     }
 state10:
-#ifdef DEBUG
+#ifdef DEBUG3
     printf("-> [%c] state10 ", c);
 #endif
     // n, t, 0, ', ", \ (state10 -> state11)
@@ -382,7 +407,25 @@ state10:
         c == '\\')
     {
         save_char(c);
+        switch (c)
+        {
+        case 'n':
+            value = '\n';
+            break;
+        case 't':
+            value = '\t';
+            break;
+        case '0':
+            value = '\0';
+            break;
+        default:
+            value = c;
+            break;
+        }
         get_char();
+#ifdef DEBUG4
+        printf("i = %d (%c), value = %d (%c)\n", i, i, value, value);
+#endif
         goto state11;
     }
     // Other than n, t, 0, ', ", \ (state10 -> ERROR -> final)
@@ -393,7 +436,7 @@ state10:
         goto final;
     }
 state11:
-#ifdef DEBUG
+#ifdef DEBUG3
     printf("-> [%c] state11 ", c);
 #endif
     // ' (state11 -> NUM -> final)
@@ -402,6 +445,7 @@ state11:
         save_char(c);
         get_char();
         token = TOKEN_NUM;
+        sprintf(lexvalue, "%d", value);
         goto final;
     }
     // Othar than ' (state11 -> ERROR -> final)
@@ -411,7 +455,7 @@ state11:
         goto final;
     }
 state12:
-#ifdef DEBUG
+#ifdef DEBUG3
     printf("-> [%c] state12 ", c);
 #endif
     // = (state12 -> COLEQ -> final)
@@ -429,7 +473,7 @@ state12:
         goto final;
     }
 state13:
-#ifdef DEBUG
+#ifdef DEBUG3
     printf("-> [%c] state13 ", c);
 #endif
     // = (state13 -> LE -> final)
@@ -455,7 +499,7 @@ state13:
         goto final;
     }
 state14:
-#ifdef DEBUG
+#ifdef DEBUG3
     printf("-> [%c] state14 ", c);
 #endif
     // = (state14 -> GE -> final)
@@ -481,7 +525,7 @@ state14:
         goto final;
     }
 state15:
-#ifdef DEBUG
+#ifdef DEBUG3
     printf("-> [%c] state15 ", c);
 #endif
     // > (state14 -> GE -> final)
@@ -507,7 +551,7 @@ state15:
         goto final;
     }
 final:
-#ifdef DEBUG
+#ifdef DEBUG3
     printf("-> final\n", c);
 #endif
     return;
@@ -529,7 +573,7 @@ void print_token()
     }
     else if (token == TOKEN_NUM)
     {
-        fprintf(lexout, "NUM\t[%s]\n", lexeme);
+        fprintf(lexout, "NUM\t[%s]\t[%s]\n", lexeme, lexvalue);
     }
     else if (token == TOKEN_COL)
     {

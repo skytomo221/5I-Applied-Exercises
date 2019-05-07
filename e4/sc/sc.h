@@ -49,6 +49,9 @@
 #define ERROR_TYPE 5
 #define ERROR_INTERNAL 6
 
+//#define DEBUG3 1
+#define DEBUG4 1
+
 typedef struct {
 	char *name;
 	int value;
@@ -63,6 +66,7 @@ extern int lineno;
 extern void get_token();
 extern void print_token();
 extern void convert(FILE *in, FILE *out);
+extern char lexvalue[];
 /* keywords.c */
 extern int find_keywords(char *the_name);
 extern void setup_keywords();
