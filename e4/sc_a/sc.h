@@ -50,7 +50,7 @@
 #define ERROR_INTERNAL 6
 
 //#define DEBUG3 1
-#define DEBUG4 1
+//#define DEBUG4 1
 
 typedef struct {
 	char *name;

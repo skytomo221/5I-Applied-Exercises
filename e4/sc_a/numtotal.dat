@@ -1,0 +1,42 @@
+   We, the Japanese people, acting through our duly elected representatives in the National 
+Diet, determined that we shall secure for ourselves and our posterity the fruits of peaceful 
+cooperation with all nations and the blessings of liberty throughout this land, and resolved 
+that never again shall we be visited with the horrors of war through the action of government, 
+(* comment 
+ including a LF *)
+(			(* single ( *)
+0xA 0xB 0xC 0xD 0xE 0xF
+0xabc
+do proclaim that sovereign power resides with the people and do firmly establish this 
+Constitution. Government is a sacred trust of the people, the authority for which is derived 
+from the people, the powers of which are exercised by the representatives of the people, and the 
+benefits of which are enjoyed by the people. This is a universal principle of mankind upon which 
+this Constitution is founded. We reject and revoke all constitutions, laws, ordinances, and 
+rescripts in conflict herewith.
+a			(* identifier one character *)
+a1b2c3d4e		(* identifier *)
+if			(* keywords *)
+then else while do repeat until begin end long word byte goto
+and or not
+0			(* num *)
+1 2 3 4 5 6 7 8 9 10
+01234
+0x0 0x1 0x2 0x3 0x4 0x5 0x6 0x7 0x8 0x9 0xa 0xb 0xc 0xd 0xe 0xf
+   We, the Japanese people, desire peace for all time and are deeply conscious of the high 
+ideals controlling human relationship, and we have determined to preserve our security and 
+existence, trusting in the justice and faith of the peace-loving peoples of the world. We desire 
+0xAB12
+'a' ' ' '\n' '\t' '\0' '\'' '\"' '\\' 'n' 't' '0'
+: := < <= <> <a > >= >< >a = =< => =a
+() + - * / ; & #
+to occupy an honored place in an international society striving for the preservation of peace, 
+and the banishment of tyranny and slavery, oppression and intolerance for all time from the 
+earth. We recognize that all peoples of the world have the right to live in the peace, free from 
+fear and want.
+()+-*/;&#
+      /			/	done
+   We believe that no nation is responsible to itself alone, but that laws of political morality 
+are universal; and that obedience to such laws is incumbent upon all nations who would sustain 
+their own sovereignty and justify their sovereign relationship with other nations.
+   We, the Japanese people, pledge our national honor to accomplish these high ideals and 
+purposes with all our resources.
