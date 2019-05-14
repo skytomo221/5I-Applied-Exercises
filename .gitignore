@@ -5,6 +5,8 @@
 
 *.out
 
-sc
+e3/sc/sc
+e4/sc_a/sc
+e4/sc_b/sc
 
 *.PNG
