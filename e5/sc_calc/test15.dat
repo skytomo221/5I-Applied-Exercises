@@ -1,0 +1,8 @@
+1 + 20 - 300 * 0xabCD / 0x1234
+	+ 'a' - '\0' * '\t' / '\n' + '\"' - '\"' * '\\' / 'z'
+	+ a - b * c / d
+	+ (a + b) * (c - d) / (+e) * (-f) * (+g * 10 - h)
+	+ (a + (b + (c + (d + e))))
+	+ (a and b) or (c or d) and (not e)
+	+ (a = b) + ( a <> b ) + (a < b ) + ( a > b)
+	+ ((a<=b)+(a>=b)+(a=<b)+(a=>b)+(a><b)) and not a

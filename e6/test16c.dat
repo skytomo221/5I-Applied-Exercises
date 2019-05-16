@@ -1,0 +1,2 @@
+if a = 1 then a := a + b * c - 10 / 2
+	else while a <= 5 do repeat a := b until b >= 5
