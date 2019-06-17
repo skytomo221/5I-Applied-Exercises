@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "*.hs": "haskell",
+        "sc.h": "c"
+    }
+}
