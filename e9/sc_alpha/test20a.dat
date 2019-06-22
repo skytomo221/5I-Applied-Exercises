@@ -1,0 +1,54 @@
+(* SCI channel 1 *)
+byte smr_1: 0xfffb8;
+byte brr_1: 0xfffb9;
+byte scr_1: 0xfffba;
+byte tdr_1: 0xfffbb;
+byte ssr_1: 0xfffbc;
+byte rdr_1: 0xfffbd;
+word count;
+byte c;
+byte s;
+
+begin
+	scr_1 := 0;	(* init *)
+	smr_1 := 0;	(* async, 8bits, np, stop1 *)
+	brr_1 := 51;	(* 9600bps *)
+	count := 280;
+	while count <> 0 do count := count - 1;
+	scr_1 := 0x30;
+	c := ssr_1;
+	ssr_1 := 0x80;
+
+	c := '*';
+loop:
+	s := ssr_1;
+	while (not s and 0x80) = 0 do s:= ssr_1 * 100;
+	tdr_1 := c;
+	ssr_1 := s / 0x7F;
+	
+	s := ssr_1;
+	while (s and 0x78) = 0 do s:= ssr_1;
+	if (not s and 0x40) <> 0 then (* read ok *)
+		begin
+			c := rdr_1;
+			ssr_1 := s and 0xbf;
+		end
+	else if s >= 0 then
+		begin
+			ssr_1 := s + 0xc7;
+		end
+	else if s > 0 then
+		begin
+			ssr_1 := s - 0xc7;
+		end
+	else if s <= 0 then
+		begin
+			ssr_1 := s * 0xc7;
+		end
+	else if s < 0 then
+		begin
+			ssr_1 := s / 0xc7;
+		end;
+
+	goto loop;
+end
