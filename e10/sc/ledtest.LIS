@@ -1,0 +1,157 @@
+*** H8/300H ASSEMBLER (Evaluation software) Ver.1.0 ***     06/26/19 09:54:00                                            PAGE     1
+PROGRAM NAME =
+
+    1                             1                     .cpu            300HA
+    2 000000                      2                     .section        A,code,locate=H'000000
+    3 000000 00000100             3                     .data.l         reset
+    4 000100                      4                     .section        B,code,locate=H'000100
+    5 000100 7A0700FFFF10         5     reset:          mov.l           #H'FFFF10,ER7
+    6 000106 58000000             6                     bra             main
+    7        00FEE003             7     p4ddr           .equ            H'00FEE003
+    8        00FFFFD3             8     p4dr            .equ            H'00FFFFD3
+    9        00FEE03E             9     p4pcr           .equ            H'00FEE03E
+   10        00FEE004            10     p5ddr           .equ            H'00FEE004
+   11        00FFFFD4            11     p5dr            .equ            H'00FFFFD4
+   12        00FEE03F            12     p5pcr           .equ            H'00FEE03F
+   13        0000010A            13     main            .equ            $
+   14 00010A 01006B2000000250    14                     mov.l           @L0004,ER0
+   15 000112 6AA800FEE004        15                     mov.b           R0L,@p5ddr
+   16 000118 01006B2000000254    16                     mov.l           @L0005,ER0
+   17 000120 6AA800FEE03F        17                     mov.b           R0L,@p5pcr
+   18 000126 01006B2000000254    18                     mov.l           @L0005,ER0
+   19 00012E 6AA800FEE003        19                     mov.b           R0L,@p4ddr
+   20 000134 01006B2000000250    20                     mov.l           @L0004,ER0
+   21 00013C 6AA800FFBF21        21                     mov.b           R0L,@led_d
+   22        00000142            22     loop            .equ            $
+   23 000142 28D4                23                     mov.b           @p5dr,R0L
+   24 000144 17D0                24                     exts.w          R0
+   25 000146 17F0                25                     exts.l          ER0
+   26 000148 6AA800FFBF20        26                     mov.b           R0L,@sw_d
+   27 00014E 6A2800FFBF20        27                     mov.b           @sw_d,R0L
+   28 000154 17D0                28                     exts.w          R0
+   29 000156 17F0                29                     exts.l          ER0
+   30 000158 01006B2100000258    30                     mov.l           @L0006,ER1
+   31 000160 01F06610            31                     and.l           ER1,ER0
+   32 000164 01006B2100000258    32                     mov.l           @L0006,ER1
+   33 00016C 1F90                33                     cmp.l           ER1,ER0
+   34 00016E 5870000A            34                     beq             L0007
+   35 000172 7A0000000000        35                     mov.l           #H'00000000,ER0
+   36 000178 58000006            36                     bra             L0008
+   37 00017C 7A00FFFFFFFF        37     L0007:          mov.l           #H'FFFFFFFF,ER0
+   38        00000182            38     L0008           .equ            $
+   39 000182 01F06600            39                     and.l           ER0,ER0
+   40 000186 58700020            40                     beq             L0000
+   41 00018A 6A2800FFBF21        41                     mov.b           @led_d,R0L
+   42 000190 17D0                42                     exts.w          R0
+   43 000192 17F0                43                     exts.l          ER0
+   44 000194 01006B210000025C    44                     mov.l           @L0009,ER1
+   45 00019C 01F06610            45                     and.l           ER1,ER0
+   46 0001A0 6AA800FFBF21        46                     mov.b           R0L,@led_d
+   47 0001A6 5800001C            47                     bra             L0001
+   48        000001AA            48     L0000           .equ            $
+   49 0001AA 6A2800FFBF21        49                     mov.b           @led_d,R0L
+   50 0001B0 17D0                50                     exts.w          R0
+   51 0001B2 17F0                51                     exts.l          ER0
+   52 0001B4 01006B2100000260    52                     mov.l           @L0010,ER1
+   53 0001BC 01F06410            53                     or.l            ER1,ER0
+   54 0001C0 6AA800FFBF21        54                     mov.b           R0L,@led_d
+   55        000001C6            55     L0001           .equ            $
+   56 0001C6 6A2800FFBF20        56                     mov.b           @sw_d,R0L
+   57 0001CC 17D0                57                     exts.w          R0
+*** H8/300H ASSEMBLER (Evaluation software) Ver.1.0 ***     06/26/19 09:54:00                                            PAGE     2
+PROGRAM NAME =
+
+   58 0001CE 17F0                58                     exts.l          ER0
+   59 0001D0 01006B2100000264    59                     mov.l           @L0011,ER1
+   60 0001D8 01F06610            60                     and.l           ER1,ER0
+   61 0001DC 01006B2100000264    61                     mov.l           @L0011,ER1
+   62 0001E4 1F90                62                     cmp.l           ER1,ER0
+   63 0001E6 5870000A            63                     beq             L0012
+   64 0001EA 7A0000000000        64                     mov.l           #H'00000000,ER0
+   65 0001F0 58000006            65                     bra             L0013
+   66 0001F4 7A00FFFFFFFF        66     L0012:          mov.l           #H'FFFFFFFF,ER0
+   67        000001FA            67     L0013           .equ            $
+   68 0001FA 01F06600            68                     and.l           ER0,ER0
+   69 0001FE 58700020            69                     beq             L0002
+   70 000202 6A2800FFBF21        70                     mov.b           @led_d,R0L
+   71 000208 17D0                71                     exts.w          R0
+   72 00020A 17F0                72                     exts.l          ER0
+   73 00020C 01006B2100000268    73                     mov.l           @L0014,ER1
+   74 000214 01F06610            74                     and.l           ER1,ER0
+   75 000218 6AA800FFBF21        75                     mov.b           R0L,@led_d
+   76 00021E 5800001C            76                     bra             L0003
+   77        00000222            77     L0002           .equ            $
+   78 000222 6A2800FFBF21        78                     mov.b           @led_d,R0L
+   79 000228 17D0                79                     exts.w          R0
+   80 00022A 17F0                80                     exts.l          ER0
+   81 00022C 01006B210000026C    81                     mov.l           @L0015,ER1
+   82 000234 01F06410            82                     or.l            ER1,ER0
+   83 000238 6AA800FFBF21        83                     mov.b           R0L,@led_d
+   84        0000023E            84     L0003           .equ            $
+   85 00023E 6A2800FFBF21        85                     mov.b           @led_d,R0L
+   86 000244 17D0                86                     exts.w          R0
+   87 000246 17F0                87                     exts.l          ER0
+   88 000248 38D3                88                     mov.b           R0L,@p4dr
+   89 00024A 5800FEF4            89                     bra             loop
+   90 00024E 40FE                90                     bra             $
+   91 000250                     91                     .align          2
+   92 000250 00000000            92     L0004           .data.l         H'00000000
+   93 000254 000000FF            93     L0005           .data.l         H'000000FF
+   94 000258 00000001            94     L0006           .data.l         H'00000001
+   95 00025C 000000BF            95     L0009           .data.l         H'000000BF
+   96 000260 00000040            96     L0010           .data.l         H'00000040
+   97 000264 00000002            97     L0011           .data.l         H'00000002
+   98 000268 0000007F            98     L0014           .data.l         H'0000007F
+   99 00026C 00000080            99     L0015           .data.l         H'00000080
+  100 FFBF20                    100                     .section        C,data,locate=H'FFBF20
+  101 FFBF20                    101                     .align          2
+  102 FFBF20 00000001           102     sw_d            .res.b          1
+  103 FFBF21 00000001           103     led_d           .res.b          1
+  104                           104                     .end
+  *****TOTAL ERRORS       0
+  *****TOTAL WARNINGS     0
+*** H8/300H ASSEMBLER (Evaluation software) Ver.1.0 ***     06/26/19 09:54:00                                            PAGE     3
+
+*** CROSS REFERENCE LIST
+
+NAME                             SECTION  ATTR VALUE             SEQUENCE
+
+A                                A        SCT  00000000      2*
+B                                B        SCT  00000100      4*
+C                                C        SCT  00FFBF20    100*
+L0000                            B        EQU  000001AA     40    48*
+L0001                            B        EQU  000001C6     47    55*
+L0002                            B        EQU  00000222     69    77*
+L0003                            B        EQU  0000023E     76    84*
+L0004                            B             00000250     14    20    92*
+L0005                            B             00000254     16    18    93*
+L0006                            B             00000258     30    32    94*
+L0007                            B             0000017C     34    37*
+L0008                            B        EQU  00000182     36    38*
+L0009                            B             0000025C     44    95*
+L0010                            B             00000260     52    96*
+L0011                            B             00000264     59    61    97*
+L0012                            B             000001F4     63    66*
+L0013                            B        EQU  000001FA     65    67*
+L0014                            B             00000268     73    98*
+L0015                            B             0000026C     81    99*
+led_d                            C             00FFBF21     21    41    46    49    54    70    75    78    83    85   103*
+loop                             B        EQU  00000142     22*   89 
+main                             B        EQU  0000010A      6    13*
+p4ddr                                     EQU  00FEE003      7*   19 
+p4dr                                      EQU  00FFFFD3      8*   88 
+p4pcr                                     EQU  00FEE03E      9*
+p5ddr                                     EQU  00FEE004     10*   15 
+p5dr                                      EQU  00FFFFD4     11*   23 
+p5pcr                                     EQU  00FEE03F     12*   17 
+reset                            B             00000100      3     5*
+sw_d                             C             00FFBF20     26    27    56   102*
+*** H8/300H ASSEMBLER (Evaluation software) Ver.1.0 ***     06/26/19 09:54:00                                            PAGE     4
+
+*** SECTION DATA LIST
+
+SECTION                          ATTRIBUTE    SIZE             START
+
+A                                ABS-CODE    0000004           000000          
+B                                ABS-CODE    0000170           000100          
+C                                ABS-DATA    0000002           FFBF20          
